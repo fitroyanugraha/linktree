@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 
+// Environment variables for API
 const BEARER_TOKEN = import.meta.env.VITE_BEARER_TOKEN;
 const API_URL = import.meta.env.VITE_API_URL;
 const MAX_MESSAGES_PER_DAY = parseInt(import.meta.env.VITE_MAX_MESSAGES_PER_DAY, 10);
 
+// ContactForm component for anonymous messages
 function ContactForm({ onMessageSent }) {
-  const [message, setMessage] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [placeholder, setPlaceholder] = useState('send anonymous massage here!');
-  const [rateLimitReached, setRateLimitReached] = useState(false);
+  // State variables
+  const [message, setMessage] = useState(''); // Message text
+  const [isFocused, setIsFocused] = useState(false); // Textarea focus state
+  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [placeholder, setPlaceholder] = useState('send anonymous massage here!'); // Placeholder text
+  const [rateLimitReached, setRateLimitReached] = useState(false); // Rate limit flag
 
+  // Prevent space key on confirm button
   const preventSpaceConfirm = (e) => {
     if (e.code === 'Space') e.preventDefault();
   };
@@ -26,6 +30,7 @@ function ContactForm({ onMessageSent }) {
     checkRateLimit();
   }, []);
 
+  // Check and handle rate limiting
   const checkRateLimit = () => {
     const today = new Date().toDateString();
     const lastSendDate = localStorage.getItem('lastSendDate');
@@ -65,11 +70,13 @@ function ContactForm({ onMessageSent }) {
     }
   };
 
+  // Sanitize input to remove HTML and scripts
   const sanitizeInput = (input) => {
     // Remove HTML tags and scripts
     return input.replace(/<[^>]*>/g, '').replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
   };
 
+  // Send message data to API
   const sendData = async () => {
     // Check rate limit first
     if (rateLimitReached) {

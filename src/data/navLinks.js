@@ -1,6 +1,10 @@
+// Check if device is Android
 const isAndroid = () => /android/i.test(navigator.userAgent || navigator.vendor || window.opera);
+
+// Check if device is iOS
 const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
+// Open app intent URL with fallback
 function openIntentURL(intentURL, fallbackURL) {
   const iframe = document.createElement('iframe');
   iframe.style.display = 'none';
@@ -11,6 +15,7 @@ function openIntentURL(intentURL, fallbackURL) {
   }, 1000);
 }
 
+// Navigation links data
 const navLinks = [
   {
     id: 'instagram',

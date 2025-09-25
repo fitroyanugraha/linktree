@@ -1,11 +1,16 @@
 import React from 'react';
-import piterImage from '../assets/piter.JPEG';
+import headerImage from '../assets/Photo-Profile.jpeg';
 
+// Header component displays profile image and name
 function Header() {
+  // User's name
+  const name = "Fitroya Nugraha";
   return (
     <header>
-      <img src={piterImage} alt="tidak berhasil dimuat" />
-      <h1>Fitroya Nugraha</h1>
+      {/* Profile image */}
+      <img src={headerImage} alt="tidak berhasil dimuat" />
+      {/* User's name */}
+      <h1>{name}</h1>
     </header>
   );
 }
