@@ -44,7 +44,7 @@ function ContactForm({ onMessageSent }) {
         Swal.fire({
           icon: 'warning',
           width: 320,
-          text: 'you have reach the limit 2 message today:)',
+          text: 'you have reached the daily limit of messages per day',
           confirmButtonColor: '#181818',
           iconColor: '#bd0000',
           didOpen: () => {
@@ -71,7 +71,7 @@ function ContactForm({ onMessageSent }) {
       Swal.fire({
         icon: 'warning',
         width: 320,
-        text: 'you have reach the limit 2 message today:)',
+        text: 'you have reached the daily limit of messages per day',
         confirmButtonColor: '#181818',
         iconColor: '#bd0000',
         didOpen: () => {
@@ -202,7 +202,7 @@ function ContactForm({ onMessageSent }) {
     <>
       {rateLimitReached ? (
         <div className="message-sent">
-          You’ve reached your 2-message limit for today.
+          come back tomorrow to send more messages!
         </div>
       ) : (
         <>
