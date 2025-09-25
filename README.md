@@ -18,6 +18,7 @@ This project is a personal linktree for Fitroya Nugraha, showcasing social media
 - **Styling**: CSS with Poppins font from Google Fonts
 - **Icons**: Boxicons for social media icons
 - **Alerts**: SweetAlert2 for user notifications
+- **API**: SheetDB for backend data storage
 - **Development**: ESLint for code linting
 
 ## Project Structure
