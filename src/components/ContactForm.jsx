@@ -9,7 +9,7 @@ function ContactForm({ onMessageSent }) {
   const [message, setMessage] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [placeholder, setPlaceholder] = useState('send anonymous massage Here!');
+  const [placeholder, setPlaceholder] = useState('send anonymous massage here!');
   const [rateLimitReached, setRateLimitReached] = useState(false);
 
   const preventSpaceConfirm = (e) => {
@@ -44,15 +44,20 @@ function ContactForm({ onMessageSent }) {
         Swal.fire({
           icon: 'warning',
           width: 320,
-          text: 'you have reached the daily limit of messages per day',
+          text: 'you\'ve reached your daily message limit!',
           confirmButtonColor: '#181818',
           iconColor: '#bd0000',
           didOpen: () => {
-            document.addEventListener('keydown', preventSpaceConfirm);
-            Swal.getConfirmButton()?.focus();
+            const confirmBtn = Swal.getConfirmButton();
+            if (confirmBtn) {
+              confirmBtn.addEventListener('keydown', preventSpaceConfirm);
+            }
           },
           willClose: () => {
-            document.removeEventListener('keydown', preventSpaceConfirm);
+            const confirmBtn = Swal.getConfirmButton();
+            if (confirmBtn) {
+              confirmBtn.removeEventListener('keydown', preventSpaceConfirm);
+            }
           }
         });
         localStorage.setItem('alertShownToday', today);
@@ -68,20 +73,30 @@ function ContactForm({ onMessageSent }) {
   const sendData = async () => {
     // Check rate limit first
     if (rateLimitReached) {
-      Swal.fire({
-        icon: 'warning',
-        width: 320,
-        text: 'you have reached the daily limit of messages per day',
-        confirmButtonColor: '#181818',
-        iconColor: '#bd0000',
-        didOpen: () => {
-          document.addEventListener('keydown', preventSpaceConfirm);
-          Swal.getConfirmButton()?.focus();
-        },
-        willClose: () => {
-          document.removeEventListener('keydown', preventSpaceConfirm);
-        }
-      });
+      const today = new Date().toDateString();
+      const alertShownToday = localStorage.getItem('alertShownToday') === today;
+      if (!alertShownToday) {
+        Swal.fire({
+          icon: 'warning',
+          width: 320,
+          text: 'you\'ve reached your daily message limit!',
+          confirmButtonColor: '#181818',
+          iconColor: '#bd0000',
+          didOpen: () => {
+            const confirmBtn = Swal.getConfirmButton();
+            if (confirmBtn) {
+              confirmBtn.addEventListener('keydown', preventSpaceConfirm);
+            }
+          },
+          willClose: () => {
+            const confirmBtn = Swal.getConfirmButton();
+            if (confirmBtn) {
+              confirmBtn.removeEventListener('keydown', preventSpaceConfirm);
+            }
+          }
+        });
+        localStorage.setItem('alertShownToday', today);
+      }
       return;
     }
 
@@ -97,11 +112,16 @@ function ContactForm({ onMessageSent }) {
         confirmButtonColor: '#181818',
         iconColor: '#bd0000',
         didOpen: () => {
-          document.addEventListener('keydown', preventSpaceConfirm);
-          Swal.getConfirmButton()?.focus();
+          const confirmBtn = Swal.getConfirmButton();
+          if (confirmBtn) {
+            confirmBtn.addEventListener('keydown', preventSpaceConfirm);
+          }
         },
         willClose: () => {
-          document.removeEventListener('keydown', preventSpaceConfirm);
+          const confirmBtn = Swal.getConfirmButton();
+          if (confirmBtn) {
+            confirmBtn.removeEventListener('keydown', preventSpaceConfirm);
+          }
         }
       });
       setIsFocused(false);
@@ -118,11 +138,16 @@ function ContactForm({ onMessageSent }) {
         confirmButtonColor: '#181818',
         iconColor: '#bd0000',
         didOpen: () => {
-          document.addEventListener('keydown', preventSpaceConfirm);
-          Swal.getConfirmButton()?.focus();
+          const confirmBtn = Swal.getConfirmButton();
+          if (confirmBtn) {
+            confirmBtn.addEventListener('keydown', preventSpaceConfirm);
+          }
         },
         willClose: () => {
-          document.removeEventListener('keydown', preventSpaceConfirm);
+          const confirmBtn = Swal.getConfirmButton();
+          if (confirmBtn) {
+            confirmBtn.removeEventListener('keydown', preventSpaceConfirm);
+          }
         }
       });
       return;
@@ -160,11 +185,16 @@ function ContactForm({ onMessageSent }) {
         iconColor: '#00c9a7',
         text: 'Anonymous message successfully sent!',
         didOpen: () => {
-          document.addEventListener('keydown', preventSpaceConfirm);
-          Swal.getConfirmButton()?.focus();
+          const confirmBtn = Swal.getConfirmButton();
+          if (confirmBtn) {
+            confirmBtn.addEventListener('keydown', preventSpaceConfirm);
+          }
         },
         willClose: () => {
-          document.removeEventListener('keydown', preventSpaceConfirm);
+          const confirmBtn = Swal.getConfirmButton();
+          if (confirmBtn) {
+            confirmBtn.removeEventListener('keydown', preventSpaceConfirm);
+          }
         }
       });
       onMessageSent();
@@ -186,11 +216,16 @@ function ContactForm({ onMessageSent }) {
         confirmButtonColor: '#181818',
         iconColor: '#bd0000',
         didOpen: () => {
-          document.addEventListener('keydown', preventSpaceConfirm);
-          Swal.getConfirmButton()?.focus();
+          const confirmBtn = Swal.getConfirmButton();
+          if (confirmBtn) {
+            confirmBtn.addEventListener('keydown', preventSpaceConfirm);
+          }
         },
         willClose: () => {
-          document.removeEventListener('keydown', preventSpaceConfirm);
+          const confirmBtn = Swal.getConfirmButton();
+          if (confirmBtn) {
+            confirmBtn.removeEventListener('keydown', preventSpaceConfirm);
+          }
         }
       });
     } finally {
@@ -202,7 +237,7 @@ function ContactForm({ onMessageSent }) {
     <>
       {rateLimitReached ? (
         <div className="message-sent">
-          come back tomorrow to send more messages!
+          come back tomorrow to send more messages.
         </div>
       ) : (
         <>
@@ -218,7 +253,7 @@ function ContactForm({ onMessageSent }) {
               onChange={(e) => setMessage(e.target.value)}
               onFocus={() => {
                 setIsFocused(true);
-                setPlaceholder('send anonymous massage Here!');
+                setPlaceholder('send anonymous massage here!');
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
