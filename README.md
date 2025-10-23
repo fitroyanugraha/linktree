@@ -26,23 +26,31 @@ This project is a personal linktree for Fitroya Nugraha, showcasing social media
 ```
 linktree/
 ├── public/
-│   └── favicon/          # Favicon assets
+│   └── favicon/              # Favicon assets
+│       ├── star.svg          # ⭐ Active favicon
+│       ├── favicon.svg       # Alternative favicon
+│       ├── site.webmanifest  # PWA manifest
+│       └── *.png             # PNG favicons
 ├── src/
 │   ├── assets/
-│   │   └── Profile.jpeg    # Profile image
+│   │   └── Photo-Profile.jpeg  # Profile image
 │   ├── components/
-│   │   ├── ContactForm.jsx  # Anonymous message form
-│   │   ├── Header.jsx       # Profile header
-│   │   └── NavButtons.jsx    # Social media navigation
+│   │   ├── ContactForm.jsx     # Anonymous message form
+│   │   ├── Header.jsx          # Profile header
+│   │   └── NavButtons.jsx      # Social media navigation
 │   ├── data/
-│   │   └── navLinks.js       # Social media links configuration
-│   ├── App.jsx               # Main app component
-│   ├── main.jsx              # React entry point
-│   └── style.css             # Global styles
-├── index.html               # HTML template
-├── package.json             # Dependencies and scripts
-├── vite.config.js           # Vite configuration
-└── README.md                # This file
+│   │   └── navLinks.js         # Social media links configuration
+│   ├── App.jsx                 # Main app component
+│   ├── main.jsx                # React entry point
+│   └── style.css               # Global styles
+├── .env                      # Environment variables (not in repo)
+├── .gitignore                # Git ignore configuration
+├── eslint.config.js          # ESLint configuration
+├── index.html                # Vite entry point
+├── package.json              # Dependencies and scripts
+├── vite.config.js            # Vite configuration
+├── LICENSE                   # License file
+└── README.md                 # This file
 ```
 
 ## Key Features
