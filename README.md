@@ -25,32 +25,35 @@ This project is a personal linktree for Fitroya Nugraha, showcasing social media
 
 ```
 linktree/
-├── public/
-│   └── favicon/              # Favicon assets
-│       ├── star.svg          # ⭐ Active favicon
-│       ├── favicon.svg       # Alternative favicon
-│       ├── site.webmanifest  # PWA manifest
-│       └── *.png             # PNG favicons
-├── src/
+├── public/                   # Static assets
+│   ├── favicon/
+│   │   ├── star.svg          # ⭐ Main favicon (all-in-one SVG)
+│   │   └── site.webmanifest  # PWA manifest configuration
+│   ├── robots.txt            # SEO: Search engine crawl rules
+│   └── sitemap.xml           # SEO: Site structure map
+│
+├── src/                      # Application source code
 │   ├── assets/
-│   │   └── Photo-Profile.jpeg  # Profile image
+│   │   └── Photo-Profile.jpeg   # User profile picture
 │   ├── components/
-│   │   ├── ContactForm.jsx     # Anonymous message form
-│   │   ├── Header.jsx          # Profile header
-│   │   └── NavButtons.jsx      # Social media navigation
+│   │   ├── ContactForm.jsx      # Anonymous message form with rate limiting
+│   │   ├── Header.jsx           # Profile header component
+│   │   └── NavButtons.jsx       # Social media links navigation
 │   ├── data/
-│   │   └── navLinks.js         # Social media links configuration
-│   ├── App.jsx                 # Main app component
-│   ├── main.jsx                # React entry point
-│   └── style.css               # Global styles
-├── .env                      # Environment variables (not in repo)
-├── .gitignore                # Git ignore configuration
+│   │   └── navLinks.js          # Social links configuration & deep linking
+│   ├── App.jsx                  # Main React component
+│   ├── main.jsx                 # React entry point & DOM render
+│   └── style.css                # Global styles & CSS variables
+│
+├── .env                      # Environment variables (gitignored)
+├── .gitignore                # Git ignore rules
 ├── eslint.config.js          # ESLint configuration
-├── index.html                # Vite entry point
-├── package.json              # Dependencies and scripts
-├── vite.config.js            # Vite configuration
-├── LICENSE                   # License file
-└── README.md                 # This file
+├── index.html                # HTML entry point with SEO meta tags
+├── package.json              # Dependencies & npm scripts
+├── package-lock.json         # Locked dependency versions
+├── vite.config.js            # Vite build configuration
+├── LICENSE                   # MIT License
+└── README.md                 # Project documentation
 ```
 
 ## Key Features
@@ -77,6 +80,20 @@ linktree/
 - Mobile-first approach
 - Scroll prevention when form is focused
 - Smooth animations and transitions
+
+### PWA (Progressive Web App)
+- Installable on mobile devices
+- Offline-ready with service worker support
+
+### SEO Optimization
+- Comprehensive meta tags (title, description, keywords)
+- Open Graph tags for social media sharing (Facebook, WhatsApp, LinkedIn)
+- Twitter Card tags for Twitter sharing
+- Structured Data (JSON-LD) with Schema.org Person markup
+- robots.txt for search engine crawlers
+- sitemap.xml for better indexing
+- Canonical URL to prevent duplicate content
+- Rich snippets support for Google search results
 
 ## Environment Variables
 
@@ -188,11 +205,24 @@ Headers include:
 - Environment variables for sensitive data
 - No direct database access from frontend
 
+## SEO & Performance
+
+### Search Engine Optimization
+This web app is fully optimized for search engines with:
+- **Meta Tags**: Complete primary, Open Graph, and Twitter Card tags
+- **Structured Data**: JSON-LD schema for Person entity
+- **robots.txt**: Allows all search engines to crawl
+- **sitemap.xml**: Helps search engines discover and index pages
+- **Canonical URL**: Prevents duplicate content issues
+- **Rich Snippets**: Schema.org markup for enhanced search results
+
+
 ## Browser Support
 
 - Modern browsers with ES6+ support
 - Mobile browsers with app deep linking
 - Responsive design works on all screen sizes
+- PWA support on Chrome, Edge, Safari (iOS 11.3+)
 
 ## Development Notes
 
