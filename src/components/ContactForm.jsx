@@ -10,6 +10,11 @@ const MAX_MESSAGES_PER_DAY = parseInt(
   10
 );
 
+// Constants
+const MIN_MESSAGE_LENGTH = 20;
+const MAX_MESSAGE_LENGTH = 115;
+const RATE_LIMIT_TIMEOUT = 1000;
+
 // Helper function to show Swal alert with space key prevention
 const showAlert = (config) => {
   const preventSpaceConfirm = (e) => {
@@ -33,6 +38,22 @@ const showAlert = (config) => {
       config.willClose?.();
     },
   });
+};
+
+// Helper function to show rate limit alert
+const showRateLimitAlert = () => {
+  const today = new Date().toDateString();
+  const alertShownToday = localStorage.getItem("alertShownToday") === today;
+  if (!alertShownToday) {
+    showAlert({
+      icon: "warning",
+      width: 320,
+      text: "you've reached your daily message limit!",
+      confirmButtonColor: "#181818",
+      iconColor: "#bd0000",
+    });
+    localStorage.setItem("alertShownToday", today);
+  }
 };
 
 // ContactForm component for anonymous messages
@@ -64,7 +85,6 @@ function ContactForm({ onMessageSent }) {
       localStorage.getItem("messageCount") || "0",
       10
     );
-    const alertShownToday = localStorage.getItem("alertShownToday") === today;
 
     if (lastSendDate !== today) {
       // Reset count for new day
@@ -74,16 +94,7 @@ function ContactForm({ onMessageSent }) {
       setRateLimitReached(false);
     } else if (messageCount >= MAX_MESSAGES_PER_DAY) {
       setRateLimitReached(true);
-      if (!alertShownToday) {
-        showAlert({
-          icon: "warning",
-          width: 320,
-          text: "you've reached your daily message limit!",
-          confirmButtonColor: "#181818",
-          iconColor: "#bd0000",
-        });
-        localStorage.setItem("alertShownToday", today);
-      }
+      showRateLimitAlert();
     }
   };
 
@@ -102,18 +113,7 @@ function ContactForm({ onMessageSent }) {
   const sendData = async () => {
     // Check rate limit first
     if (rateLimitReached) {
-      const today = new Date().toDateString();
-      const alertShownToday = localStorage.getItem("alertShownToday") === today;
-      if (!alertShownToday) {
-        showAlert({
-          icon: "warning",
-          width: 320,
-          text: "you've reached your daily message limit!",
-          confirmButtonColor: "#181818",
-          iconColor: "#bd0000",
-        });
-        localStorage.setItem("alertShownToday", today);
-      }
+      showRateLimitAlert();
       return;
     }
 
@@ -135,7 +135,7 @@ function ContactForm({ onMessageSent }) {
     }
 
     // Validate minimum message length
-    if (sanitizedMessage.length < 20) {
+    if (sanitizedMessage.length < MIN_MESSAGE_LENGTH) {
       showAlert({
         icon: "warning",
         width: 320,
@@ -235,7 +235,7 @@ function ContactForm({ onMessageSent }) {
               rows="5"
               placeholder={isFocused ? "" : placeholder}
               required
-              maxLength="115"
+              maxLength={MAX_MESSAGE_LENGTH}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onFocus={() => {
