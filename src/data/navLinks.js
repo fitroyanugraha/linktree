@@ -12,6 +12,7 @@ function openIntentURL(intentURL, fallbackURL) {
   document.body.appendChild(iframe);
   setTimeout(() => {
     window.location.href = fallbackURL;
+    document.body.removeChild(iframe);
   }, 1000);
 }
 
@@ -24,7 +25,7 @@ const navLinks = [
     redirectFunction: () => {
       if (isAndroid()) {
         openIntentURL(
-          'intent://user?username=fitroyanugraha#Intent;package=com.instagram.android;scheme=https;end',
+          'intent://instagram.com/fitroyanugraha/#Intent;package=com.instagram.android;scheme=https;end',
           'https://instagram.com/fitroyanugraha/'
         );
       } else if (isIOS()) {
@@ -41,11 +42,11 @@ const navLinks = [
     redirectFunction: () => {
       if (isAndroid()) {
         openIntentURL(
-          'intent://user/profile/6897101026814428161#Intent;package=com.zhiliaoapp.musically;scheme=snssdk1233;end',
+          'intent://www.tiktok.com/@swadikap.kopikap/#Intent;package=com.ss.android.ugc.tiktok;scheme=https;end',
           'https://www.tiktok.com/@swadikap.kopikap/'
         );
       } else if (isIOS()) {
-        window.location.href = 'snssdk1233://user/profile/6897101026814428161';
+        window.location.href = 'tiktok://user/@swadikap.kopikap';
       } else {
         window.location.href = 'https://www.tiktok.com/@swadikap.kopikap/';
       }

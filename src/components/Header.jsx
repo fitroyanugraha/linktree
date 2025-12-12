@@ -8,7 +8,7 @@ function Header() {
   return (
     <header>
       {/* Profile image */}
-      <img src={headerImage} alt="tidak berhasil dimuat" />
+      <img src={headerImage} alt="Profile picture" />
       {/* User's name */}
       <h1>{name}</h1>
     </header>
