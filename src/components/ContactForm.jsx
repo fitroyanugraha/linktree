@@ -10,6 +10,31 @@ const MAX_MESSAGES_PER_DAY = parseInt(
   10
 );
 
+// Helper function to show Swal alert with space key prevention
+const showAlert = (config) => {
+  const preventSpaceConfirm = (e) => {
+    if (e.code === "Space") e.preventDefault();
+  };
+
+  return Swal.fire({
+    ...config,
+    didOpen: () => {
+      const confirmBtn = Swal.getConfirmButton();
+      if (confirmBtn) {
+        confirmBtn.addEventListener("keydown", preventSpaceConfirm);
+      }
+      config.didOpen?.();
+    },
+    willClose: () => {
+      const confirmBtn = Swal.getConfirmButton();
+      if (confirmBtn) {
+        confirmBtn.removeEventListener("keydown", preventSpaceConfirm);
+      }
+      config.willClose?.();
+    },
+  });
+};
+
 // ContactForm component for anonymous messages
 function ContactForm({ onMessageSent }) {
   // State variables
@@ -20,11 +45,6 @@ function ContactForm({ onMessageSent }) {
     "send anonymous message here!"
   ); // Placeholder text
   const [rateLimitReached, setRateLimitReached] = useState(false); // Rate limit flag
-
-  // Prevent space key on confirm button
-  const preventSpaceConfirm = (e) => {
-    if (e.code === "Space") e.preventDefault();
-  };
 
   useEffect(() => {
     // Toggle body scroll class based on textarea focus
@@ -55,24 +75,12 @@ function ContactForm({ onMessageSent }) {
     } else if (messageCount >= MAX_MESSAGES_PER_DAY) {
       setRateLimitReached(true);
       if (!alertShownToday) {
-        Swal.fire({
+        showAlert({
           icon: "warning",
           width: 320,
           text: "you've reached your daily message limit!",
           confirmButtonColor: "#181818",
           iconColor: "#bd0000",
-          didOpen: () => {
-            const confirmBtn = Swal.getConfirmButton();
-            if (confirmBtn) {
-              confirmBtn.addEventListener("keydown", preventSpaceConfirm);
-            }
-          },
-          willClose: () => {
-            const confirmBtn = Swal.getConfirmButton();
-            if (confirmBtn) {
-              confirmBtn.removeEventListener("keydown", preventSpaceConfirm);
-            }
-          },
         });
         localStorage.setItem("alertShownToday", today);
       }
@@ -97,24 +105,12 @@ function ContactForm({ onMessageSent }) {
       const today = new Date().toDateString();
       const alertShownToday = localStorage.getItem("alertShownToday") === today;
       if (!alertShownToday) {
-        Swal.fire({
+        showAlert({
           icon: "warning",
           width: 320,
           text: "you've reached your daily message limit!",
           confirmButtonColor: "#181818",
           iconColor: "#bd0000",
-          didOpen: () => {
-            const confirmBtn = Swal.getConfirmButton();
-            if (confirmBtn) {
-              confirmBtn.addEventListener("keydown", preventSpaceConfirm);
-            }
-          },
-          willClose: () => {
-            const confirmBtn = Swal.getConfirmButton();
-            if (confirmBtn) {
-              confirmBtn.removeEventListener("keydown", preventSpaceConfirm);
-            }
-          },
         });
         localStorage.setItem("alertShownToday", today);
       }
@@ -126,24 +122,12 @@ function ContactForm({ onMessageSent }) {
 
     // Validate empty message
     if (sanitizedMessage.trim() === "") {
-      Swal.fire({
+      showAlert({
         icon: "warning",
         width: 320,
         text: "Please enter a message before sending.",
         confirmButtonColor: "#181818",
         iconColor: "#bd0000",
-        didOpen: () => {
-          const confirmBtn = Swal.getConfirmButton();
-          if (confirmBtn) {
-            confirmBtn.addEventListener("keydown", preventSpaceConfirm);
-          }
-        },
-        willClose: () => {
-          const confirmBtn = Swal.getConfirmButton();
-          if (confirmBtn) {
-            confirmBtn.removeEventListener("keydown", preventSpaceConfirm);
-          }
-        },
       });
       setIsFocused(false);
       setPlaceholder("do you want to try one more time?");
@@ -152,24 +136,12 @@ function ContactForm({ onMessageSent }) {
 
     // Validate minimum message length
     if (sanitizedMessage.length < 20) {
-      Swal.fire({
+      showAlert({
         icon: "warning",
         width: 320,
         text: "Send a message of at least 1 sentence",
         confirmButtonColor: "#181818",
         iconColor: "#bd0000",
-        didOpen: () => {
-          const confirmBtn = Swal.getConfirmButton();
-          if (confirmBtn) {
-            confirmBtn.addEventListener("keydown", preventSpaceConfirm);
-          }
-        },
-        willClose: () => {
-          const confirmBtn = Swal.getConfirmButton();
-          if (confirmBtn) {
-            confirmBtn.removeEventListener("keydown", preventSpaceConfirm);
-          }
-        },
       });
       return;
     }
@@ -206,26 +178,19 @@ function ContactForm({ onMessageSent }) {
           },
         }),
       });
-      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      await response.json();
       // Success - message sent
-      Swal.fire({
+      showAlert({
         icon: "success",
         width: 320,
         confirmButtonColor: "#181818",
         iconColor: "#00c9a7",
         text: "Anonymous message successfully sent!",
-        didOpen: () => {
-          const confirmBtn = Swal.getConfirmButton();
-          if (confirmBtn) {
-            confirmBtn.addEventListener("keydown", preventSpaceConfirm);
-          }
-        },
-        willClose: () => {
-          const confirmBtn = Swal.getConfirmButton();
-          if (confirmBtn) {
-            confirmBtn.removeEventListener("keydown", preventSpaceConfirm);
-          }
-        },
       });
       onMessageSent();
 
@@ -242,25 +207,13 @@ function ContactForm({ onMessageSent }) {
       if (import.meta.env.DEV) {
         console.error("Error sending message:", error);
       }
-      Swal.fire({
+      showAlert({
         icon: "error",
         title: "Oops...",
         width: 320,
         text: "Something went wrong! Please try again.",
         confirmButtonColor: "#181818",
         iconColor: "#bd0000",
-        didOpen: () => {
-          const confirmBtn = Swal.getConfirmButton();
-          if (confirmBtn) {
-            confirmBtn.addEventListener("keydown", preventSpaceConfirm);
-          }
-        },
-        willClose: () => {
-          const confirmBtn = Swal.getConfirmButton();
-          if (confirmBtn) {
-            confirmBtn.removeEventListener("keydown", preventSpaceConfirm);
-          }
-        },
       });
     } finally {
       setIsLoading(false);
