@@ -173,10 +173,11 @@ Configuration for social media links:
 ### ContactForm.jsx
 The core contact form component:
 - **State Management**: Tracks message, focus, loading, and rate limit status
-- **Rate Limiting**: Checks and updates daily message count in localStorage
-- **Validation**: Ensures message is not empty and meets minimum length
-- **API Integration**: Sends POST request to configured API endpoint
-- **User Experience**: Shows loading state, success/error alerts, prevents space bar confirmation
+- **Rate Limiting**: Checks and updates daily message count in localStorage with helper function `showRateLimitAlert()`
+- **Validation**: Ensures message is not empty and meets minimum length (configurable constants: `MIN_MESSAGE_LENGTH`, `MAX_MESSAGE_LENGTH`)
+- **API Integration**: Sends POST request to configured API endpoint with response validation
+- **User Experience**: Shows loading state, success/error alerts via `showAlert()` helper
+
 
 ### style.css
 Global styles including:
