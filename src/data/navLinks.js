@@ -65,7 +65,7 @@ const navLinks = [
     label: 'Portofolio Web',
     iconClass: 'bx bx-news',
     redirectFunction: () => {
-      window.location.href = 'https://piter.lovestoblog.com/';
+      window.location.href = 'https://fitroyanugraha.vercel.app/';
     }
   }
 ];
